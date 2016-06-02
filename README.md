@@ -1,6 +1,6 @@
 # apiai-skype-bot
 
-Before you start the bot you need to download the skype-sdk.tar.gz 
+Before you start the bot you need to download the [skype-sdk.tar.gz](https://developer.microsoft.com/en-us/skype/bots/downloads) 
 package to the directory and then install the dependencies using 
 `npm install`.
 
