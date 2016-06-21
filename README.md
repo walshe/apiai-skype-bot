@@ -9,3 +9,5 @@ that they contain your bot's id and MSA OAuth credentials.
 
 You can start the bot with `node echo.js`. By default the server will
 be listening on port 5000.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
