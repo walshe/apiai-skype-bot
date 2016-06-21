@@ -20,6 +20,6 @@
     "express": "^4.13.4",
     "node-uuid": "^1.4.7",
     "restify": "^4.0.4",
-    "skype-sdk": "./skype-sdk.tar.gz"
+    "skype-sdk": "https://devportalassets.azureedge.net/files/skype-sdk.tar.gz"
   }
 }
