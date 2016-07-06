@@ -153,28 +153,7 @@ module.exports = class SkypeBot {
 
             if(/^\d+$/.test(messageText)){
                 //user made a menu choice
-                bot.reply("You chose " + messageText +",  thats a great choice", true, function(){
-
-                    /*_.each(recipientMenuCache[sender], function(menuToProductIdMapping){
-
-                        if(menuToProductIdMapping.menuId.toString() == messageText){
-
-                            _.each(db.restaurant, function(restaurant){
-                                if(restaurant.productId == Number(messageText)){
-                                    bot.reply(restaurant.name ,true);
-                                }
-                            })
-
-                            _.each(db.clothing, function(clothingStore){
-                                if(clothingStore.productId == Number(messageText)){
-                                    bot.reply(clothingStore.name ,true);
-                                }
-                            })
-                        }
-
-                    });*/
-
-                });
+ 
 
 
                 return;
