@@ -100,6 +100,18 @@ module.exports = class SkypeBot {
                         console.log(sender, 'Response as text message');
                         bot.reply(responseText, true);
 
+                        let action = response.result.action;
+                        let actionIncomplete = response.result.actionIncomplete;
+                        
+                        if(action == 'getProductsByLocation' && !actionIncomplete){
+
+                            bot.reply(responseText, true);    
+                            
+                            
+                        }
+                        
+                        
+
                     } else {
                         console.log(sender, 'Received empty speech');
                     }
