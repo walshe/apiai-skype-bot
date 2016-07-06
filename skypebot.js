@@ -159,17 +159,28 @@ module.exports = class SkypeBot {
 
                         if(menuToProductIdMapping.menuId.toString() == messageText){
 
+                            let customText = '';
+
                             _.each(db.restaurant, function(restaurant){
                                 if(restaurant.productId == Number(messageText)){
-                                    bot.reply(restaurant.name ,true);
+                                    customText = restaurant.name;
+
                                 }
                             })
 
                             _.each(db.clothing, function(clothingStore){
                                 if(clothingStore.productId == Number(messageText)){
-                                    bot.reply(clothingStore.name ,true);
+                                    customText = clothingStore.name;
+
                                 }
                             })
+
+                            if(customText){
+                                customText += '   Excellent choice, let me look for a coupon...';
+                            }
+
+                            bot.reply(customText,true);
+
                         }
 
                     });
@@ -227,12 +238,12 @@ module.exports = class SkypeBot {
 
                                         recipientMenuCache[sender] = [];
 
-                                        var customText = '';
+                                        let customText = '';
                                         _.each(products, function(product, index){
 
                                             customText += (index+1).toString() + '.' +product.name +"\n";
 
-                                            recipientMenuCache[sender].push({menuId: (index+1) , productId : product.productId});
+                                            recipientMenuCache[sender].push({menuId: (index) , productId : product.productId});
 
                                         });
 
