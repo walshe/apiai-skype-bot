@@ -155,7 +155,7 @@ module.exports = class SkypeBot {
                 //user made a menu choice
                 bot.reply("You chose " + messageText +",  thats a great choice", true, function(){
 
-                    _.each(recipientMenuCache[sender], function(menuToProductIdMapping){
+                    /*_.each(recipientMenuCache[sender], function(menuToProductIdMapping){
 
                         if(menuToProductIdMapping.menuId.toString() == messageText){
 
@@ -172,7 +172,7 @@ module.exports = class SkypeBot {
                             })
                         }
 
-                    });
+                    });*/
 
                 });
 
