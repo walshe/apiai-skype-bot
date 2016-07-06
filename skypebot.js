@@ -105,7 +105,7 @@ module.exports = class SkypeBot {
                         
                         if(action == 'getProductsByLocation' && !actionIncomplete){
 
-                            bot.reply(responseText, true);    
+                            bot.reply("some custom content", true);
                             
                             
                         }
