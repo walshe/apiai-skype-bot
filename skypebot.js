@@ -94,6 +94,8 @@ module.exports = class SkypeBot {
                 if (SkypeBot.isDefined(response.result)) {
                     let responseText = response.result.fulfillment.speech;
 
+                    console.log("response from api.ai------->"+JSON.stringify(response.result));
+
                     if (SkypeBot.isDefined(responseText)) {
                         console.log(sender, 'Response as text message');
                         bot.reply(responseText, true);
