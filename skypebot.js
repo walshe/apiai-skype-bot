@@ -204,8 +204,8 @@ module.exports = class SkypeBot {
                                 }
 
 
-                            });
-                        }
+                            };
+                        });
 
                     } else {
                         console.log(sender, 'Received empty speech');
