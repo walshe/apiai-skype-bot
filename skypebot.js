@@ -141,6 +141,17 @@ module.exports = class SkypeBot {
                 this._sessionIds.set(sender, uuid.v1());
             }
 
+
+
+            if(/^\d+$/.test(messageText)){
+                //user made a menu choice
+                bot.reply("You chose " + messageText +",  thats a great choice");
+                return;
+
+            }
+
+
+
             let apiaiRequest = this._apiaiService.textRequest(messageText,
                 {
                     sessionId: this._sessionIds.get(sender)
@@ -158,7 +169,7 @@ module.exports = class SkypeBot {
 
                     if (SkypeBot.isDefined(responseText)) {
                         console.log(sender, 'Response as text message');
-                        
+
                         bot.reply(responseText, true, function(){
 
                             let action = response.result.action;
@@ -185,9 +196,11 @@ module.exports = class SkypeBot {
                                         var customText = '';
                                         _.each(products, function(product, index){
 
-                                            customText += index.toString() + '.' +product.name +"\n";
+                                            customText += (index+1).toString() + '.' +product.name +"\n";
 
                                         });
+
+                                        customText += "\n\n Enter a number to make a choice e.g. 1"
 
                                         bot.reply(customText, true)
 
