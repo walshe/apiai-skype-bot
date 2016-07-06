@@ -98,17 +98,23 @@ module.exports = class SkypeBot {
 
                     if (SkypeBot.isDefined(responseText)) {
                         console.log(sender, 'Response as text message');
-                        bot.reply(responseText, true);
-
-                        let action = response.result.action;
-                        let actionIncomplete = response.result.actionIncomplete;
                         
-                        if(action == 'getProductsByLocation' && !actionIncomplete){
+                        bot.reply(responseText, true, function(){
 
-                            bot.reply("some custom content", true);
-                            
-                            
-                        }
+                            let action = response.result.action;
+                            let actionIncomplete = response.result.actionIncomplete;
+
+                            if(action == 'getProductsByLocation' && !actionIncomplete){
+
+                                bot.reply("some custom content", true);
+
+
+                            }
+
+
+                        });
+
+
                         
                         
 
