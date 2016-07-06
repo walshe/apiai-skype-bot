@@ -6,6 +6,14 @@ const skype = require('skype-sdk');
 const _ = require('underscore');
 
 
+/**
+ * use this cache for mapping user menu choices to productIds
+ * @type {{}}
+ */
+var recipientMenuCache =  {
+
+};
+
 
 var db = {
     restaurant : [
@@ -145,7 +153,30 @@ module.exports = class SkypeBot {
 
             if(/^\d+$/.test(messageText)){
                 //user made a menu choice
-                bot.reply("You chose " + messageText +",  thats a great choice");
+                bot.reply("You chose " + messageText +",  thats a great choice", true, function(){
+
+                    _.each(recipientMenuCache[sender], function(menuToProductIdMapping){
+
+                        if(menuToProductIdMapping.menuId.toString() == messageText){
+
+                            _.each(db.restaurant, function(restaurant){
+                                if(restaurant.productId == Number(messageText)){
+                                    bot.reply(restaurant.name ,true);
+                                }
+                            })
+
+                            _.each(db.clothing, function(clothingStore){
+                                if(clothingStore.productId == Number(messageText)){
+                                    bot.reply(clothingStore.name ,true);
+                                }
+                            })
+                        }
+
+                    });
+
+                });
+
+
                 return;
 
             }
@@ -193,10 +224,15 @@ module.exports = class SkypeBot {
                                     });
 
                                     if(products){
+
+                                        recipientMenuCache[sender] = [];
+
                                         var customText = '';
                                         _.each(products, function(product, index){
 
                                             customText += (index+1).toString() + '.' +product.name +"\n";
+
+                                            recipientMenuCache[sender].push {menuId: (index+1) , productId : product.productId};
 
                                         });
 
@@ -206,7 +242,7 @@ module.exports = class SkypeBot {
 
 
                                     }else{
-                                        bot.reply('Couldnt find any results', true)
+                                        bot.reply("Couldn't find any results", true);
                                     }
 
                                 }else{
