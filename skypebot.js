@@ -196,22 +196,16 @@ module.exports = class SkypeBot {
                                         bot.reply('Couldnt find any results', true)
                                     }
 
-
-
-
                                 }else{
                                     bot.reply('Couldnt find any results', true)
 
 
 
-                            }
+                                }
 
 
-                        });
-
-
-                        
-                        
+                            });
+                        }
 
                     } else {
                         console.log(sender, 'Received empty speech');
