@@ -185,13 +185,11 @@ module.exports = class SkypeBot {
                             bot.reply(customText,true, function(){
                                 console.log("Sending attachment..");
 
-                                fs.readFile('/public/UWS/Logo_Restaurants/QR_Code_Coupon/images.png', function(err, data) {
-                                    console.log('yay read the file');
-                                });
+                                let buffer = fs.readFileSync('/public/UWS/Logo_Restaurants/QR_Code_Coupon/images.png');
 
-                                /*bot.replyWithAttachment("Result", "Image", binaryContent, function(){console.log("finished sending attachment")}) {
+                                bot.replyWithAttachment("Result", "Image", buffer, function(){console.log("finished sending attachment")}) {
 
-                                }*/
+                                }
                             });
 
                         }
