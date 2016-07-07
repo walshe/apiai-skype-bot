@@ -155,7 +155,7 @@ module.exports = class SkypeBot {
                 //user made a menu choice
                 //bot.reply("You chose " + messageText +",  thats a great choice", function(){
 
-                    console.log("contents of cache:" + JSON.stringify(recipientMenuCache[sender]));
+                    console.log("..contents of cache:" + JSON.stringify(recipientMenuCache[sender]));
 
                     _.each(recipientMenuCache[sender], function(menuToProductIdMapping){
 
