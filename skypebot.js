@@ -247,7 +247,7 @@ module.exports = class SkypeBot {
 
                                             customText += (index+1).toString() + ' - ' +product.name +"\n";
 
-                                            recipientMenuCache[sender].push({menuId: (index) , productId : product.productId});
+                                            recipientMenuCache[sender].push({menuId: (index+1) , productId : product.productId});
 
                                         });
 
