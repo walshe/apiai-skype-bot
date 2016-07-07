@@ -4,6 +4,7 @@ const apiai = require('apiai');
 const uuid = require('node-uuid');
 const skype = require('skype-sdk');
 const _ = require('underscore');
+const fs = require('fs');
 
 
 /**
@@ -182,7 +183,15 @@ module.exports = class SkypeBot {
                             }
 
                             bot.reply(customText,true, function(){
-                                bot.reply('http://www.mcdonalds.com/us/en/home.html',true);
+                                console.log("Sending attachment..");
+
+                                fs.readFile('public/UWS/Logo_Restaurants/QR_Code_Coupon/images.png', function(err, data) {
+                                    console.log('yay read the file');
+                                });
+
+                                /*bot.replyWithAttachment("Result", "Image", binaryContent, function(){console.log("finished sending attachment")}) {
+
+                                }*/
                             });
 
                         }
