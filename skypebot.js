@@ -163,23 +163,25 @@ module.exports = class SkypeBot {
 
                             _.each(db.restaurant, function(restaurant){
                                 if(restaurant.productId == Number(messageText)){
-                                    customText = restaurant.name;
+                                    customText = restaurant.name + ", " +restaurant.city;;
 
                                 }
                             })
 
                             _.each(db.clothing, function(clothingStore){
                                 if(clothingStore.productId == Number(messageText)){
-                                    customText = clothingStore.name;
+                                    customText = clothingStore.name + ", " +clothingStore.city;
 
                                 }
                             })
 
                             if(customText){
-                                customText += '   Excellent choice, let me look for a coupon...';
+                                customText += '   ...excellent choice, let me look for a coupon...';
                             }
 
-                            bot.reply(customText,true);
+                            bot.reply(customText,true, function(){
+                                bot.reply('http://www.mcdonalds.com/us/en/home.html',true);
+                            });
 
                         }
 
