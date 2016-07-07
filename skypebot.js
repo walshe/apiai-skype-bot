@@ -187,7 +187,7 @@ module.exports = class SkypeBot {
 
                                 let buffer = fs.readFileSync('./public/UWS/Logo_Restaurants/QR_Code_Coupon/images.png');
 
-                                bot.replyWithAttachment("Result", "Image", buffer, function(){
+                                bot.replyWithAttachment("Result", "Image", buffer, null, function(){
                                     console.log("finished sending attachment")
                                 });
 
