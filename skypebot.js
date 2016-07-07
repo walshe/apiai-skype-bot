@@ -155,6 +155,8 @@ module.exports = class SkypeBot {
                 //user made a menu choice
                 //bot.reply("You chose " + messageText +",  thats a great choice", function(){
 
+                    console.log("contents of cache:" + JSON.stringify(recipientMenuCache[sender]));
+
                     _.each(recipientMenuCache[sender], function(menuToProductIdMapping){
 
                         if(menuToProductIdMapping.menuId.toString() == messageText){
@@ -243,7 +245,7 @@ module.exports = class SkypeBot {
                                         let customText = '';
                                         _.each(products, function(product, index){
 
-                                            customText += (index+1).toString() + '.' +product.name +"\n";
+                                            customText += (index+1).toString() + ' - ' +product.name +"\n";
 
                                             recipientMenuCache[sender].push({menuId: (index) , productId : product.productId});
 
