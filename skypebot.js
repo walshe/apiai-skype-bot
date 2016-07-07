@@ -185,9 +185,9 @@ module.exports = class SkypeBot {
                             bot.reply(customText,true, function(){
                                 console.log("Sending attachment..");
 
-                                fs.readFile('public/UWS/Logo_Restaurants/QR_Code_Coupon/images.png', function(err, data) {
+                                /*fs.readFile('public/UWS/Logo_Restaurants/QR_Code_Coupon/images.png', function(err, data) {
                                     console.log('yay read the file');
-                                });
+                                });*/
 
                                 /*bot.replyWithAttachment("Result", "Image", binaryContent, function(){console.log("finished sending attachment")}) {
 
