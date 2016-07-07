@@ -4,7 +4,7 @@ const apiai = require('apiai');
 const uuid = require('node-uuid');
 const skype = require('skype-sdk');
 const _ = require('underscore');
-//const fs = require('fs');
+const fs = require('fs');
 
 
 /**
@@ -185,7 +185,7 @@ module.exports = class SkypeBot {
                             bot.reply(customText,true, function(){
                                 console.log("Sending attachment..");
 
-                                fs.readFile('public/UWS/Logo_Restaurants/QR_Code_Coupon/images.png', function(err, data) {
+                                fs.readFile('/public/UWS/Logo_Restaurants/QR_Code_Coupon/images.png', function(err, data) {
                                     console.log('yay read the file');
                                 });
 
