@@ -5,6 +5,7 @@ const uuid = require('node-uuid');
 const skype = require('skype-sdk');
 const _ = require('underscore');
 const fs = require('fs');
+const request = require('request');
 
 
 /**
@@ -312,7 +313,6 @@ module.exports = class SkypeBot {
             if (!this._sessionIds.has(sender)) {
                 this._sessionIds.set(sender, uuid.v1());
             }
-
 
 
             if(/^\d+$/.test(messageText)){
