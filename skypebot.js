@@ -369,7 +369,7 @@ module.exports = class SkypeBot {
 
             request({
                 url: 'https://api.projectoxford.ai/luis/v1/application?id=29a815c5-3543-4823-8b38-7be8bd113fb0&subscription-key=b33535abc6f9432fba6fa1fd5ace75ed',
-                qs: {q: text},
+                qs: {q: messageText},
                 method: 'GET'
             }, function (error, response, body) {
                 if (error) {
