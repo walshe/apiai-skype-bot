@@ -209,7 +209,7 @@ module.exports = class SkypeBot {
             }
 
             console.log('calling processWithApiAi');
-            self.processWithApiAi(messageText,sender);
+            self.processWithApiAi(messageText,sender, self);
 
         } else {
             console.log('Empty message');
@@ -229,11 +229,11 @@ module.exports = class SkypeBot {
     }
 
 
-    processWithApiAi(messageText, sender){
+    processWithApiAi(messageText, sender, self){
         console.log('in processWithApiAi');
-        let apiaiRequest = this._apiaiService.textRequest(messageText,
+        let apiaiRequest = self._apiaiService.textRequest(messageText,
             {
-                sessionId: this._sessionIds.get(sender)
+                sessionId: self._sessionIds.get(sender)
             });
 
         console.log('got to here');
