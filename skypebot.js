@@ -132,12 +132,12 @@ module.exports = class SkypeBot {
     });
 
         this.botService.on('personalMessage', (bot, data) => {
-            this.processMessage(bot, data);
+            this.processMessageWithApiAI(bot, data);
     });
 
     }
 
-    processMessage(bot, data) {
+    processMessageWithApiAI(bot, data) {
 
         let messageText = data.content;
         let sender = data.from;
@@ -293,6 +293,178 @@ module.exports = class SkypeBot {
         });
 
             apiaiRequest.end();
+        } else {
+            console.log('Empty message');
+        }
+    }
+
+
+    processMessageWithLuis(bot, data) {
+
+        let messageText = data.content;
+        let sender = data.from;
+
+        if (messageText && sender) {
+
+            console.log(sender, messageText);
+
+            if (!this._sessionIds.has(sender)) {
+                this._sessionIds.set(sender, uuid.v1());
+            }
+
+
+
+            if(/^\d+$/.test(messageText)){
+                //user made a menu choice
+                //bot.reply("You chose " + messageText +",  thats a great choice", function(){
+
+                console.log("..contents of cache:" + JSON.stringify(recipientMenuCache[sender]));
+
+                _.each(recipientMenuCache[sender], function(menuToProductIdMapping){
+
+                    if(menuToProductIdMapping.menuId.toString() == messageText){
+
+                        let customText = '';
+
+                        _.each(db.restaurant, function(restaurant){
+                            if(restaurant.productId == Number(messageText)){
+                                customText = restaurant.name + ", " +restaurant.city;;
+
+                            }
+                        })
+
+                        _.each(db.clothing, function(clothingStore){
+                            if(clothingStore.productId == Number(messageText)){
+                                customText = clothingStore.name + ", " +clothingStore.city;
+
+                            }
+                        })
+
+                        if(customText){
+                            customText += '   ...excellent choice, let me look for a coupon...';
+                        }
+
+                        bot.reply(customText,true, function(){
+                            console.log("Sending attachment..");
+
+                            let buffer = fs.readFileSync('./public/UWS/Logo_Restaurants/QR_Code_Coupon/images.png');
+
+                            bot.replyWithAttachment("Result", "Image", buffer, null, function(){
+                                console.log("finished sending attachment")
+                            });
+
+
+                        });
+
+                    }
+
+                });
+
+
+                return;
+
+            }
+
+
+            request({
+                url: 'https://api.projectoxford.ai/luis/v1/application?id=29a815c5-3543-4823-8b38-7be8bd113fb0&subscription-key=b33535abc6f9432fba6fa1fd5ace75ed',
+                qs: {q: text},
+                method: 'GET'
+            }, function (error, response, body) {
+                if (error) {
+                    console.log('Error sending processing message: ', error);
+                } else if (response.body.error) {
+                    console.log('Error: ', response.body.error);
+                } else{
+
+                    var data = JSONbig.parse(response.body);
+
+                    console.log("got response from LUIS:" +JSON.stringify(data));
+                    if(data['intents']){
+                        let topIntent = data['intents'][0];
+                        if(topIntent.intent == 'getProductByCity'){
+                            console.log('got getProductByCity');
+                            if(topIntent.actions[0].triggered){
+                                console.log('got trigged');
+                                let parameters = topIntent.actions[0].parameters;
+
+                                let productType = '';
+                                let city = '';
+
+                                _.each(parameters, function(parameter){
+                                    if(parameter.name == 'product'){
+                                        productType = parameter['value'][0].entity.toLowerCase();
+                                    }
+
+                                    if(parameter.name == 'city'){
+                                        city = parameter['value'][0].entity;
+                                    }
+                                });
+
+
+                                console.log("processed productType ", productType);
+                                console.log("processed city ", city);
+
+                                let products = [];
+
+                                if(db[productType]){
+
+                                    var customText = '';
+
+                                    _.each(db[productType], function(product){
+                                        if(product.city.toUpperCase() == city.toUpperCase()){
+                                            //collect
+                                            products.push(product);
+                                        }
+                                    });
+
+                                    if(products){
+
+                                        recipientMenuCache[sender] = [];
+
+                                        let customText = '';
+                                        _.each(products, function(product, index){
+
+                                            customText += (index+1).toString() + ' - ' +product.name +"\n";
+
+                                            recipientMenuCache[sender].push({menuId: (index+1) , productId : product.productId});
+
+                                        });
+
+                                        customText += "\n\n Enter a number to make a choice e.g. 1"
+
+                                        bot.reply(customText, true)
+
+
+                                    }else{
+                                        bot.reply("Couldn't find any results", true);
+                                    }
+
+
+
+                                }else{
+                                    bot.reply("Could not find any results :(",true)
+                                }
+
+
+                            }
+                        }else if(topIntent.intent == 'None'){
+                            bot.reply("I did'nt understand what you said, please tell me what you are looking for an where e.g. I'm looking for restaurants in New York", true);
+                        }
+                    }
+
+                }
+
+
+
+            });
+
+
+
+
+
+
+
         } else {
             console.log('Empty message');
         }
