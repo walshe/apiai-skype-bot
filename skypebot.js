@@ -231,7 +231,7 @@ module.exports = class SkypeBot {
 
     processWithApiAi(messageText, sender){
         console.log('in processWithApiAi');
-        let apiaiRequest = this._apiaiService.textRequest(messageText,
+        /*let apiaiRequest = this._apiaiService.textRequest(messageText,
             {
                 sessionId: this._sessionIds.get(sender)
             });
@@ -317,7 +317,7 @@ module.exports = class SkypeBot {
             console.error(sender, 'Error while call to api.ai', error);
         });
 
-        apiaiRequest.end();
+        apiaiRequest.end();*/
 
 
     }
