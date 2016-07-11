@@ -22,5 +22,7 @@
     "restify": "^4.0.4",
     "skype-sdk": "https://devportalassets.azureedge.net/files/skype-sdk.tar.gz",
     "underscore": "~1.8.3"
+    "json-bigint": "^0.2.0",
+    "request": "^2.71.0"
   }
 }
