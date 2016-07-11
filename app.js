@@ -9,6 +9,11 @@ const SkypeBotConfig = require('./skypebotconfig');
 
 const REST_PORT = (process.env.PORT || 5000);
 
+const API_AI = 'API_AI';
+const MS_LUIS = 'LUIS';
+
+const AGENT = (process.env.NLP_SERVICE || API_AI);
+
 const botConfig = new SkypeBotConfig(
     process.env.APIAI_ACCESS_TOKEN,
     process.env.APIAI_LANG,

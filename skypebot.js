@@ -134,8 +134,13 @@ module.exports = class SkypeBot {
     });
 
         this.botService.on('personalMessage', (bot, data) => {
-            //this.processMessageWithApiAI(bot, data);
-            this.processMessageWithLuis(bot, data);
+
+            if(process.env.NLP_SERVICE == "LUIS"){
+                this.processMessageWithLuis(bot, data);
+            }else{
+                this.processMessageWithApiAI(bot, data);
+            }
+
     });
 
     }
