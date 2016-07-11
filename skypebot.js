@@ -129,18 +129,15 @@ module.exports = class SkypeBot {
 
         this.botService.on('contactAdded', (bot, data) => {
             console.log("contactAdded", data.from);
-        });
+    });
 
         this.botService.on('personalMessage', (bot, data) => {
             this.processMessage(bot, data);
-        });
+    });
 
     }
 
-
     processMessage(bot, data) {
-
-        var self = this;
 
         let messageText = data.content;
         let sender = data.from;
@@ -159,47 +156,47 @@ module.exports = class SkypeBot {
                 //user made a menu choice
                 //bot.reply("You chose " + messageText +",  thats a great choice", function(){
 
-                    console.log("..contents of cache:" + JSON.stringify(recipientMenuCache[sender]));
+                console.log("..contents of cache:" + JSON.stringify(recipientMenuCache[sender]));
 
-                    _.each(recipientMenuCache[sender], function(menuToProductIdMapping){
+                _.each(recipientMenuCache[sender], function(menuToProductIdMapping){
 
-                        if(menuToProductIdMapping.menuId.toString() == messageText){
+                    if(menuToProductIdMapping.menuId.toString() == messageText){
 
-                            let customText = '';
+                        let customText = '';
 
-                            _.each(db.restaurant, function(restaurant){
-                                if(restaurant.productId == Number(messageText)){
-                                    customText = restaurant.name + ", " +restaurant.city;;
+                        _.each(db.restaurant, function(restaurant){
+                            if(restaurant.productId == Number(messageText)){
+                                customText = restaurant.name + ", " +restaurant.city;;
 
-                                }
-                            })
-
-                            _.each(db.clothing, function(clothingStore){
-                                if(clothingStore.productId == Number(messageText)){
-                                    customText = clothingStore.name + ", " +clothingStore.city;
-
-                                }
-                            })
-
-                            if(customText){
-                                customText += '   ...excellent choice, let me look for a coupon...';
                             }
+                        })
 
-                            bot.reply(customText,true, function(){
-                                console.log("Sending attachment..");
+                        _.each(db.clothing, function(clothingStore){
+                            if(clothingStore.productId == Number(messageText)){
+                                customText = clothingStore.name + ", " +clothingStore.city;
 
-                                let buffer = fs.readFileSync('./public/UWS/Logo_Restaurants/QR_Code_Coupon/images.png');
+                            }
+                        })
 
-                                bot.replyWithAttachment("Result", "Image", buffer, null, function(){
-                                    console.log("finished sending attachment")
-                                });
-
-
-                            });
-
+                        if(customText){
+                            customText += '   ...excellent choice, let me look for a coupon...';
                         }
 
-                    });
+                        bot.reply(customText,true, function(){
+                            console.log("Sending attachment..");
+
+                            let buffer = fs.readFileSync('./public/UWS/Logo_Restaurants/QR_Code_Coupon/images.png');
+
+                            bot.replyWithAttachment("Result", "Image", buffer, null, function(){
+                                console.log("finished sending attachment")
+                            });
+
+
+                        });
+
+                    }
+
+                });
 
                 //});
 
@@ -208,38 +205,15 @@ module.exports = class SkypeBot {
 
             }
 
-            console.log('calling processWithApiAi');
-            self.processWithApiAi(messageText,sender, self);
-
-        } else {
-            console.log('Empty message');
-        }
-    }
-
-    static isDefined(obj) {
-        if (typeof obj == 'undefined') {
-            return false;
-        }
-
-        if (!obj) {
-            return false;
-        }
-
-        return obj != null;
-    }
 
 
-    processWithApiAi(messageText, sender, self){
-        console.log('in processWithApiAi');
-        let apiaiRequest = self._apiaiService.textRequest(messageText,
-            {
-                sessionId: self._sessionIds.get(sender)
-            });
+            let apiaiRequest = this._apiaiService.textRequest(messageText,
+                {
+                    sessionId: this._sessionIds.get(sender)
+                });
 
-        console.log('got to here');
-
-        /*apiaiRequest.on('response', (response) => {
-            if (this._botConfig.devConfig) {
+            apiaiRequest.on('response', (response) => {
+                if (this._botConfig.devConfig) {
                 console.log(sender, "Received api.ai response");
             }
 
@@ -312,15 +286,27 @@ module.exports = class SkypeBot {
             } else {
                 console.log(sender, 'Received empty result');
             }
-
-            });
-
-        apiaiRequest.on('error', (error) => {
-            console.error(sender, 'Error while call to api.ai', error);
         });
 
-        apiaiRequest.end();*/
+            apiaiRequest.on('error', (error) => {
+                console.error(sender, 'Error while call to api.ai', error);
+        });
 
+            apiaiRequest.end();
+        } else {
+            console.log('Empty message');
+        }
+    }
 
+    static isDefined(obj) {
+        if (typeof obj == 'undefined') {
+            return false;
+        }
+
+        if (!obj) {
+            return false;
+        }
+
+        return obj != null;
     }
 }
