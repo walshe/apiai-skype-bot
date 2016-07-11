@@ -6,6 +6,7 @@ const skype = require('skype-sdk');
 const _ = require('underscore');
 const fs = require('fs');
 const request = require('request');
+const JSONbig = require('json-bigint');
 
 
 /**
