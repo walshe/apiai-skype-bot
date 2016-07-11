@@ -208,7 +208,7 @@ module.exports = class SkypeBot {
             }
 
             console.log('calling processWithApiAi');
-            processWithApiAi(messageText,sender);
+            this.processWithApiAi(messageText,sender);
 
         } else {
             console.log('Empty message');
