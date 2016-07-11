@@ -132,7 +132,8 @@ module.exports = class SkypeBot {
     });
 
         this.botService.on('personalMessage', (bot, data) => {
-            this.processMessageWithApiAI(bot, data);
+            //this.processMessageWithApiAI(bot, data);
+            this.processMessageWithLuis(bot, data);
     });
 
     }
