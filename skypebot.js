@@ -228,5 +228,96 @@ module.exports = class SkypeBot {
     }
 
 
+    processWithApiAi(messageText, sender){
+        console.log('in processWithApiAi');
+        let apiaiRequest = this._apiaiService.textRequest(messageText,
+            {
+                sessionId: this._sessionIds.get(sender)
+            });
 
+        apiaiRequest.on('response', (response) => {
+            if (this._botConfig.devConfig) {
+                console.log(sender, "Received api.ai response");
+            }
+
+            if (SkypeBot.isDefined(response.result)) {
+                let responseText = response.result.fulfillment.speech;
+
+                console.log("response from api.ai------->"+JSON.stringify(response.result));
+
+                if (SkypeBot.isDefined(responseText)) {
+                    console.log(sender, 'Response as text message');
+
+                    bot.reply(responseText, true, function(){
+
+                        let action = response.result.action;
+                        let actionIncomplete = response.result.actionIncomplete;
+
+                        if(action == 'getProductsByLocation' && !actionIncomplete){
+
+
+                            var city = response.result.parameters['geo-city-us'];
+                            var productType = response.result.parameters['product'];
+
+                            var products = [];
+
+                            if(db[productType]){
+
+                                _.each(db[productType], function(product){
+                                    if(product.city == city){
+                                        //collect
+                                        products.push(product);
+                                    }
+                                });
+
+                                if(products){
+
+                                    recipientMenuCache[sender] = [];
+
+                                    let customText = '';
+                                    _.each(products, function(product, index){
+
+                                        customText += (index+1).toString() + ' - ' +product.name +"\n";
+
+                                        recipientMenuCache[sender].push({menuId: (index+1) , productId : product.productId});
+
+                                    });
+
+                                    customText += "\n\n Enter a number to make a choice e.g. 1"
+
+                                    bot.reply(customText, true)
+
+
+                                }else{
+                                    bot.reply("Couldn't find any results", true);
+                                }
+
+                            }else{
+                                bot.reply('Couldnt find any results', true)
+
+
+
+                            }
+
+
+                        };
+                    });
+
+                } else {
+                    console.log(sender, 'Received empty speech');
+                }
+            } else {
+                console.log(sender, 'Received empty result');
+            }
+
+            });
+
+        apiaiRequest.on('error', (error) => {
+            console.error(sender, 'Error while call to api.ai', error);
+        });
+
+        apiaiRequest.end();
+
+
+    }
 }
